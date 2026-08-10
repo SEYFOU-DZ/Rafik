@@ -1,0 +1,569 @@
+// Mock data for رفيقك الذكي platform
+
+export const SPECIALISTS = [
+  {
+    id: "spec-1",
+    name: "د. أمال بوعلام",
+    title: "أخصائية نفسية إكلينيكية",
+    email: "amal@rafiq.dz",
+    password: "specialist123",
+    avatar: "/avatars/amal.jpg",
+    initials: "أب",
+    specialty: ["قلق", "اكتئاب", "علاج معرفي سلوكي"],
+    city: "الجزائر العاصمة",
+    wilaya: "الجزائر",
+    experience: 12,
+    rating: 4.9,
+    reviewsCount: 127,
+    price: 3000,
+    currency: "دج",
+    languages: ["العربية", "الفرنسية"],
+    bio: "أخصائية نفسية إكلينيكية معتمدة بخبرة 12 سنة في علاج اضطرابات القلق والاكتئاب وصعوبات العلاقات. حاصلة على شهادة الدكتوراه في علم النفس الإكلينيكي من جامعة الجزائر.",
+    education: "دكتوراه في علم النفس الإكلينيكي - جامعة الجزائر",
+    availableDays: ["الاثنين", "الثلاثاء", "الخميس"],
+    availableHours: "09:00 - 17:00",
+    isOnline: true,
+    sessionsCount: 843,
+    nextAvailable: "غداً",
+    appointments: [
+      { patientId: "pat-1", patientName: "أحمد بن علي", date: "2026-08-12", time: "10:00", status: "pending" },
+      { patientId: "pat-2", patientName: "فاطمة سعيدي", date: "2026-08-13", time: "14:00", status: "confirmed" },
+    ]
+  },
+  {
+    id: "spec-2",
+    name: "د. كريم مزيان",
+    title: "معالج نفسي وأخصائي وسواس قهري",
+    email: "karim@rafiq.dz",
+    password: "specialist123",
+    avatar: "/avatars/karim.jpg",
+    initials: "كم",
+    specialty: ["وسواس قهري", "رهاب اجتماعي", "اضطراب ما بعد الصدمة"],
+    city: "وهران",
+    wilaya: "وهران",
+    experience: 8,
+    rating: 4.8,
+    reviewsCount: 89,
+    price: 2500,
+    currency: "دج",
+    languages: ["العربية", "الفرنسية", "الإنجليزية"],
+    bio: "متخصص في علاج الوسواس القهري وتطبيق بروتوكولات ERP (التعرض ومنع الاستجابة). حاصل على شهادة الدكتوراه من جامعة وهران بتخصص اضطرابات القلق.",
+    education: "دكتوراه في علم النفس - جامعة وهران",
+    availableDays: ["الثلاثاء", "الأربعاء", "السبت"],
+    availableHours: "10:00 - 18:00",
+    isOnline: false,
+    sessionsCount: 561,
+    nextAvailable: "الثلاثاء القادم",
+    appointments: [
+      { patientId: "pat-3", patientName: "زينب مولود", date: "2026-08-15", time: "11:00", status: "pending" },
+    ]
+  },
+  {
+    id: "spec-3",
+    name: "د. سارة حمزة",
+    title: "معالجة نفسية للأطفال والمراهقين",
+    email: "sara@rafiq.dz",
+    password: "specialist123",
+    avatar: "/avatars/sara.jpg",
+    initials: "سح",
+    specialty: ["اضطرابات الطفولة", "تأخر الكلام", "فرط الحركة ADHD"],
+    city: "قسنطينة",
+    wilaya: "قسنطينة",
+    experience: 6,
+    rating: 4.95,
+    reviewsCount: 203,
+    price: 2800,
+    currency: "دج",
+    languages: ["العربية", "الفرنسية"],
+    bio: "متخصصة في الصحة النفسية للأطفال والمراهقين. تستخدم أساليب العلاج باللعب والعلاج الفني لمساعدة الأطفال على التعبير عن مشاعرهم بطريقة آمنة.",
+    education: "ماجستير في علم نفس الأطفال - جامعة قسنطينة",
+    availableDays: ["الاثنين", "الأربعاء", "الجمعة"],
+    availableHours: "08:00 - 16:00",
+    isOnline: true,
+    sessionsCount: 1024,
+    nextAvailable: "اليوم - 3 مواعيد متاحة",
+    appointments: []
+  },
+  {
+    id: "spec-4",
+    name: "د. يوسف بلعيد",
+    title: "أخصائي نفسي وإرشاد أسري",
+    email: "youcef@rafiq.dz",
+    password: "specialist123",
+    avatar: "/avatars/youcef.jpg",
+    initials: "يب",
+    specialty: ["إرشاد أسري", "مشاكل الزواج", "إدارة الغضب"],
+    city: "عنابة",
+    wilaya: "عنابة",
+    experience: 15,
+    rating: 4.7,
+    reviewsCount: 156,
+    price: 3500,
+    currency: "دج",
+    languages: ["العربية", "الفرنسية"],
+    bio: "خبير في الإرشاد الأسري وعلاج مشكلات العلاقات الزوجية. يعمل مع الأفراد والأزواج والعائلات لتحسين جودة التواصل وحل النزاعات.",
+    education: "دكتوراه في الإرشاد النفسي - جامعة عنابة",
+    availableDays: ["الاثنين", "الثلاثاء", "الخميس", "السبت"],
+    availableHours: "11:00 - 19:00",
+    isOnline: false,
+    sessionsCount: 1287,
+    nextAvailable: "الأسبوع القادم",
+    appointments: []
+  },
+  {
+    id: "spec-5",
+    name: "د. نور الهدى قاسمي",
+    title: "أخصائية نفسية سريرية",
+    email: "nour@rafiq.dz",
+    password: "specialist123",
+    avatar: "/avatars/nour.jpg",
+    initials: "نق",
+    specialty: ["اكتئاب", "صدمات نفسية", "اضطرابات النوم"],
+    city: "البليدة",
+    wilaya: "البليدة",
+    experience: 9,
+    rating: 4.85,
+    reviewsCount: 94,
+    price: 2700,
+    currency: "دج",
+    languages: ["العربية"],
+    bio: "متخصصة في علاج الاكتئاب والصدمات النفسية باستخدام أحدث الأساليب العلاجية. تؤمن بأن كل شخص لديه القدرة على التعافي والازدهار.",
+    education: "دكتوراه في علم النفس الإكلينيكي - جامعة البليدة",
+    availableDays: ["الاثنين", "الأربعاء", "الجمعة"],
+    availableHours: "09:00 - 17:00",
+    isOnline: true,
+    sessionsCount: 628,
+    nextAvailable: "بعد غد",
+    appointments: []
+  },
+];
+
+export const PATIENTS = [
+  {
+    id: "pat-1",
+    name: "أحمد بن علي",
+    email: "ahmed@test.dz",
+    password: "patient123",
+    age: 28,
+    gender: "ذكر",
+    city: "الجزائر العاصمة",
+    phone: "0555 123 456",
+    assessmentDone: true,
+    assessmentResult: { anxiety: 14, depression: 8, dominant: "anxiety" },
+    purchasedBoxes: ["box-anxiety"],
+    bookedAppointments: [
+      { specialistId: "spec-1", specialistName: "د. أمال بوعلام", date: "2026-08-12", time: "10:00", status: "pending" }
+    ]
+  },
+  {
+    id: "pat-2",
+    name: "فاطمة سعيدي",
+    email: "fatima@test.dz",
+    password: "patient123",
+    age: 34,
+    gender: "أنثى",
+    city: "وهران",
+    phone: "0661 234 567",
+    assessmentDone: true,
+    assessmentResult: { anxiety: 7, depression: 17, dominant: "depression" },
+    purchasedBoxes: ["box-depression"],
+    bookedAppointments: [
+      { specialistId: "spec-1", specialistName: "د. أمال بوعلام", date: "2026-08-13", time: "14:00", status: "confirmed" }
+    ]
+  },
+  {
+    id: "pat-3",
+    name: "زينب مولود",
+    email: "zineb@test.dz",
+    password: "patient123",
+    age: 22,
+    gender: "أنثى",
+    city: "وهران",
+    phone: "0770 345 678",
+    assessmentDone: false,
+    assessmentResult: null,
+    purchasedBoxes: [],
+    bookedAppointments: [
+      { specialistId: "spec-2", specialistName: "د. كريم مزيان", date: "2026-08-15", time: "11:00", status: "pending" }
+    ]
+  },
+];
+
+export const BOXES = [
+  {
+    id: "box-anxiety",
+    name: "صندوق القلق",
+    nameEn: "Anxiety Relief Kit",
+    emoji: "🔵",
+    price: 1500,
+    currency: "دج",
+    color: "#4A8BB5",
+    colorLight: "rgba(74, 139, 181, 0.1)",
+    gradient: "linear-gradient(135deg, #2D5F7E, #4A8BB5)",
+    description: "حزمة شاملة لإدارة القلق واضطراباته، مصممة خصيصاً لمساعدتك على فهم قلقك والتحكم فيه.",
+    shortDesc: "أدوات علاجية لمواجهة القلق",
+    targetSymptoms: ["قلق عام", "نوبات هلع", "توتر مزمن", "خوف مفرط"],
+    rating: 4.8,
+    purchasesCount: 234,
+    patientContent: {
+      booklets: [
+        { id: "b1", title: 'دليل اختراق إنذارك الكاذب', subtitle: 'افهم قلقك', file: "/pdfs/anxiety_10_pages_guide.pdf", type: "pdf", pages: 10 },
+        { id: "b2", title: 'كتيب القلق الأكاديمي الشامل', subtitle: 'دليل علمي', file: "/pdfs/anxiety_academy_booklet.pdf", type: "pdf", pages: 24 },
+        { id: "b3", title: 'الدليل الشامل للتعافي من القلق', subtitle: 'خطوة بخطوة', file: "/pdfs/anxiety_comprehensive_guide.pdf", type: "pdf", pages: 10 },
+        { id: "b4", title: 'دليل الاستشارة الطبية للقلق', subtitle: 'للمراجعة مع الطبيب', file: "/pdfs/anxiety_medical_consultation.pdf", type: "pdf", pages: 10 },
+        { id: "b5", title: 'كتيب التعافي من القلق', subtitle: 'برنامج التعافي الكامل', file: "/pdfs/anxiety_recovery_booklet.pdf", type: "pdf", pages: 18 },
+      ],
+      cards: [
+        {
+          id: "c1",
+          type: "technique",
+          title: "تمرين التنفس المربع ⏹️",
+          color: "#4A8BB5",
+          content: "خدع دماغك لترسل له رسالة: أنا بخير!\n\n1. أخرج الهواء كاملاً\n2. شهيق بطيء من الأنف (عد 4 ثوانٍ)\n3. احبس الهواء (4 ثوانٍ)\n4. زفير هادئ من الفم (4 ثوانٍ)\n5. انتظر والرئتان فارغتان (4 ثوانٍ)\n\nكرر 4 مرات وستلاحظ تباطؤ ضربات قلبك!",
+          badge: "تمرين سريع"
+        },
+        {
+          id: "c2",
+          type: "technique",
+          title: "لعبة المحقق 5-4-3-2-1 🔍",
+          color: "#7FB285",
+          content: "أنقذ عقلك من التفكير الكارثي!\n\n5 ألوان تراها في الغرفة الآن\n4 أشياء تلمسها بجسدك\n3 أصوات خفية تسمعها\n2 رائحة تشمها حالياً\n1 طعم تتذوقه في فمك\n\nهذا التمرين يعيد عقلك إلى اللحظة الحاضرة بعيداً عن الأفكار الكارثية",
+          badge: "تأريض فوري"
+        },
+        {
+          id: "c3",
+          type: "affirmation",
+          title: "بطاقات التأكيدات الإيجابية 💙",
+          color: "#E8A87C",
+          content: '"هذا شعور وليس حقيقة"\n\n"أنا آمن الآن وهذا سيمر"\n\n"جسمي يحاول حمايتي وليس إيذائي"\n\n"أنا أقوى من هذا الشعور"\n\n"كل موجة قلق تمر... وهذه ستمر أيضاً"',
+          badge: "تأكيدات"
+        },
+        {
+          id: "c4",
+          type: "info",
+          title: "ماذا يحدث داخل جسمك؟ 🧠",
+          color: "#2D5F7E",
+          content: "عندما تشعر بالقلق، اللوزة الدماغية تضغط على 'زر الرعب'!\n\n❤️ قلبك يدق بسرعة → لضخ الدم للعضلات\n💨 تتنفس بسرعة → لإدخال أكسجين أكثر\n🤢 معدتك تؤلمك → لأن الهضم توقف مؤقتاً\n\nالحقيقة: جسمك لا يحاربك، بل يحاول إنقاذك! الأعراض مزعجة لكنها آمنة 100%",
+          badge: "معلومة علمية"
+        },
+      ],
+      worksheets: [
+        {
+          id: "w1",
+          title: "ورقة تفكيك فكرة القلق",
+          description: "اكتب الفكرة القلقة وتحداها بأسئلة المحقق",
+          fields: ["الفكرة القلقة", "هل حدث هذا من قبل؟", "ما الدليل العلمي؟", "الفكرة الحقيقية الجديدة"]
+        }
+      ]
+    },
+    specialistContent: {
+      booklets: [
+        { id: "sb1", title: 'دليل خطة جلسات القلق (CBT)', subtitle: 'بروتوكول للأخصائي', file: "/pdfs/anxiety_academy_booklet.pdf", type: "pdf", pages: 24 },
+        { id: "sb2", title: 'مرجع طبي للتعامل مع القلق', subtitle: 'للأخصائيين الطبيين', file: "/pdfs/anxiety_medical_consultation.pdf", type: "pdf", pages: 10 },
+      ],
+      assessments: [
+        {
+          id: "gad7",
+          name: "مقياس القلق العام (GAD-7)",
+          description: "الاستبيان المعتمد عالمياً لقياس مستوى القلق",
+          questions: [
+            "هل تلاحقك العصبية والشد العصبي؟",
+            "هل تجد صعوبة في إيقاف فكرة قلقة؟",
+            "هل تقلق بشأن أشياء كثيرة في وقت واحد؟",
+            "هل تجد صعوبة في الجلوس براحة؟",
+            "هل تشعر بتململ وعدم استقرار حركي؟",
+            "هل تثار وتغضب بسرعة؟",
+            "هل ينتابك خوف مفاجئ كأن شيئاً سيئاً سيحدث؟"
+          ],
+          scoring: { min: 5, mild: 10, moderate: 15, severe: 21 }
+        }
+      ],
+      protocols: [
+        { id: "p1", title: "بروتوكول CBT للقلق", content: "خطة جلسات العلاج المعرفي السلوكي للقلق..." },
+        { id: "p2", title: "مخطط دائرة القلق البصري", content: "شرح كيف تتشابك الأفكار مع المشاعر والأعراض..." },
+      ]
+    }
+  },
+  {
+    id: "box-ocd",
+    name: "صندوق الوسواس القهري",
+    nameEn: "OCD Management Kit",
+    emoji: "🟢",
+    price: 1200,
+    currency: "دج",
+    color: "#7FB285",
+    colorLight: "rgba(127, 178, 133, 0.1)",
+    gradient: "linear-gradient(135deg, #4a7d50, #7FB285)",
+    description: "حزمة متكاملة لإدارة الوسواس القهري تساعدك على فهم الطقوس القهرية ومواجهتها بأدوات علمية مثبتة.",
+    shortDesc: "أدوات علاجية لمواجهة الوسواس القهري",
+    targetSymptoms: ["أفكار وسواسية", "طقوس قهرية", "التحقق المتكرر", "الخوف من الأذى"],
+    rating: 4.7,
+    purchasesCount: 156,
+    patientContent: {
+      booklets: [],
+      cards: [
+        {
+          id: "oc1",
+          type: "info",
+          title: "ما هو الوسواس القهري؟ 🧠",
+          color: "#7FB285",
+          content: "الوسواس القهري له جزءان:\n\n🔄 الأفكار الوسواسية (Obsessions): أفكار دخيلة غير مرغوبة تتكرر وتسبب القلق\n\n⚡ السلوكيات القهرية (Compulsions): أفعال تكررها لتخفيف القلق مؤقتاً\n\nالفخ: كلما نفذت السلوك القهري، كلما تقوّت الحلقة!\nالحل: مواجهة الفكرة دون تنفيذ السلوك",
+          badge: "فهم المرض"
+        },
+        {
+          id: "oc2",
+          type: "technique",
+          title: "بطاقات مواجهة الوسواس 💪",
+          color: "#4A8BB5",
+          content: '"هذه مجرد فكرة وسواسية ولن تؤذيني"\n\n"أنا لست مضطراً للاستجابة لهذه الفكرة"\n\n"سأتحمل عدم اليقين لدقيقة واحدة"\n\n"القلق يخف بدون تنفيذ الطقس"\n\n"الفكرة ليست خطراً حقيقياً"',
+          badge: "مواجهة"
+        },
+        {
+          id: "oc3",
+          type: "technique",
+          title: "تأجيل الطقس (تقنية ERP) ⏱️",
+          color: "#E8A87C",
+          content: "خطوات تأجيل السلوك القهري:\n\n1. لاحظ الفكرة الوسواسية بدون حكم\n2. اضبط مؤقتاً لـ 5 دقائق\n3. خلال الانتظار، افعل شيئاً آخر\n4. بعد 5 دقائق، مدد لـ 10 دقائق\n5. الهدف: تعلم أن القلق يخف لوحده!\n\nكل مرة تؤجل فيها، تضعف الحلقة القهرية",
+          badge: "تقنية ERP"
+        },
+        {
+          id: "oc4",
+          type: "affirmation",
+          title: "سجل تتبع الطقوس 📓",
+          color: "#2D5F7E",
+          content: "دوّن كل يوم:\n\n⏰ وقت حدوث الطقس\n🔢 عدد مرات التكرار\n⬇️ هل حاولت التأجيل؟\n✅ هل نجحت في التأجيل؟\n\nالتتبع يساعدك على رؤية تقدمك ويعطيك قوة على الوسواس",
+          badge: "تتبع التقدم"
+        },
+      ],
+      worksheets: []
+    },
+    specialistContent: {
+      booklets: [],
+      assessments: [
+        {
+          id: "ybocs",
+          name: "مقياس ييل-براون للوسواس (Y-BOCS)",
+          description: "الاستبيان المعتمد عالمياً لقياس شدة الوسواس القهري",
+          questions: [
+            "كم من وقتك تستغرق الأفكار الوسواسية؟",
+            "كيف يؤثر الوسواس على حياتك اليومية؟",
+            "ما مدى انزعاجك من الأفكار الوسواسية؟",
+            "كيف تقاوم الأفكار الوسواسية؟",
+            "كيف تتحكم في أفكارك الوسواسية؟",
+            "كم وقتاً تقضي في الطقوس القهرية؟",
+            "كيف تؤثر الطقوس على حياتك؟",
+            "كيف تشعر إذا لم تنفذ الطقوس؟",
+            "هل تقاوم الطقوس القهرية؟",
+            "كيف تتحكم في الطقوس القهرية؟"
+          ],
+          scoring: { min: 8, mild: 16, moderate: 24, severe: 40 }
+        }
+      ],
+      protocols: [
+        { id: "erp1", title: "دليل بروتوكول ERP", content: "خطوات تطبيق التعرض ومنع الاستجابة..." },
+        { id: "erp2", title: "نموذج هرم التعرض", content: "قائمة الخاوف مرتبة من الأسهل للأصعب..." },
+      ]
+    }
+  },
+  {
+    id: "box-depression",
+    name: "صندوق الاكتئاب",
+    nameEn: "Depression & Activation Kit",
+    emoji: "🟠",
+    price: 1500,
+    currency: "دج",
+    color: "#E8A87C",
+    colorLight: "rgba(232, 168, 124, 0.1)",
+    gradient: "linear-gradient(135deg, #b5673a, #E8A87C)",
+    description: "حزمة التنشيط السلوكي لمساعدتك على كسر دائرة الاكتئاب والعودة لحياتك بخطوات صغيرة وممنهجة.",
+    shortDesc: "أدوات علاجية لمواجهة الاكتئاب",
+    targetSymptoms: ["حزن مستمر", "فقدان الاهتمام", "إرهاق", "عزلة اجتماعية"],
+    rating: 4.9,
+    purchasesCount: 198,
+    patientContent: {
+      booklets: [
+        { id: "db1", title: 'دليل رحلة التعافي من الاكتئاب', subtitle: 'ملحمة استعادة القلعة', file: "/pdfs/\u0645\u0644\u062d\u0645\u0629 \u0627\u0633\u062a\u0639\u0627\u062f\u0629 \u0627\u0644\u0642\u0644\u0639\u0629_ \u0627\u0644\u062e\u0631\u0648\u062c \u0645\u0646 \u0627\u0644\u0636\u0628\u0627\u0628.pdf", type: "pdf", pages: 80 },
+        { id: "db2", title: 'دليل الاكتئاب - 10 صفحات', subtitle: 'دليل مختصر', file: "/pdfs/depression_10_pages_guide.pdf", type: "pdf", pages: 10 },
+        { id: "db3", title: 'الدليل الشامل للاكتئاب', subtitle: 'فهم المرض والعلاج', file: "/pdfs/depression_comprehensive_guide.pdf", type: "pdf", pages: 10 },
+        { id: "db4", title: 'دليل الاستشارة الطبية للاكتئاب', subtitle: 'للمراجعة مع الطبيب', file: "/pdfs/depression_medical_consultation.pdf", type: "pdf", pages: 10 },
+      ],
+      cards: [
+        {
+          id: "dc1",
+          type: "info",
+          title: "لماذا تشعر أنك 'بطارية فارغة'؟ 🔋",
+          color: "#E8A87C",
+          content: "عقلك يحتوي على خزانين:\n\n☀️ السيروتونين: مسؤول عن المزاج والسعادة\n⚡ الدوبامين: مسؤول عن الشغف والحركة\n\nالاكتئاب يفرغ الخزانين!\n\nفخ الاكتئاب: 'لا تتحرك حتى تشعر بالرغبة أولاً'\nالحقيقة: الحركة هي التي تولّد الشغف وليس العكس!\n\nالعلاج: ابدأ بأصغر خطوة ممكنة",
+          badge: "علم الدماغ"
+        },
+        {
+          id: "dc2",
+          type: "technique",
+          title: "خدعة الخطوات الميكروسكوبية 🔬",
+          color: "#7FB285",
+          content: "الاكتئاب يجعل أبسط مهمة تبدو كجبل!\n\n❌ لا تقل: 'سأنظف الغرفة'\n✅ قل: 'سأرفع جورباً واحداً فقط ثم أعود للسرير'\n\nبمجرد رفع الجورب، يفرز دماغك جرعة دوبامين صغيرة تعطيك طاقة للخطوة التالية!\n\nكل إنجاز صغير = شحنة دوبامين",
+          badge: "تنشيط سلوكي"
+        },
+        {
+          id: "dc3",
+          type: "technique",
+          title: "شاحن السيروتونين السريع ☀️",
+          color: "#4A8BB5",
+          content: "نشاطان يومياً يشحنان مزاجك:\n\n🏆 نشاط الإنجاز (Mastery):\n• شرب كوب ماء كامل\n• ترتيب الوسادة فقط\n• غسل الوجه\n\n😊 نشاط المتعة (Pleasure):\n• الجلوس في الشمس 5 دقائق (يُنتج سيروتونين)\n• غسل الوجه بماء دافئ\n• الاستماع لأغنية واحدة تحبها",
+          badge: "شحن المزاج"
+        },
+        {
+          id: "dc4",
+          type: "affirmation",
+          title: "الرد على صوت الاكتئاب 🗣️",
+          color: "#2D5F7E",
+          content: '❌ صوت الاكتئاب: "أنت فاشل لم تفعل شيئاً اليوم"\n✅ ردك: "استيقاظي وأنا أعاني من نقص الدوبامين هو بطولة حقيقية!"\n\n❌ صوت الاكتئاب: "لا فائدة من الخروج"\n✅ ردك: "الخروج سيمنح جسدي أكسجيناً وشمساً أفضل من جدران الغرفة"',
+          badge: "مواجهة"
+        },
+      ],
+      worksheets: [
+        {
+          id: "dw1",
+          title: "مخطط المهام اليومية الصغيرة",
+          description: "حدد 3 مهام صغيرة جداً لكل يوم",
+          fields: ["المهمة الصغيرة الأولى", "المهمة الصغيرة الثانية", "المهمة الصغيرة الثالثة", "ماذا أنجزت اليوم؟"]
+        }
+      ]
+    },
+    specialistContent: {
+      booklets: [
+        { id: "dsb1", title: 'مرجع الطبيب - الاستشارة الطبية', subtitle: 'للأخصائيين الطبيين', file: "/pdfs/depression_medical_consultation.pdf", type: "pdf", pages: 10 },
+      ],
+      assessments: [
+        {
+          id: "phq9",
+          name: "مقياس PHQ-9 للاكتئاب",
+          description: "الاستبيان المعتمد لتقييم شدة الاكتئاب",
+          questions: [
+            "قلة الرغبة والمتعة في أداء أي شيء؟",
+            "الشعور بالإحباط واليأس والكآبة؟",
+            "صعوبة شديدة في النوم أو نوم مفرط؟",
+            "الإحساس الدائم بالتعب وفقدان الطاقة؟",
+            "ضعف الشهية أو الأكل بشكل مفرط؟",
+            "شعور بالسوء تجاه نفسك وأنك خيبت الأمل؟",
+            "صعوبة التركيز في القراءة أو مشاهدة أي شيء؟",
+            "البطء الشديد في الكلام والحركة أو التململ؟",
+            "ورود أفكار سلبية عن جدوى الحياة؟"
+          ],
+          scoring: { min: 5, mild: 10, moderate: 15, severe: 27 }
+        }
+      ],
+      protocols: [
+        { id: "ba1", title: "دليل بروتوكول التنشيط السلوكي", content: "كيفية إعادة دمج المريض في الأنشطة..." },
+        { id: "ba2", title: "نموذج خطة الأمان", content: "خطة طوارئ لحماية المريض..." },
+      ]
+    }
+  }
+];
+
+export const TIPS = {
+  general: [
+    {
+      id: "t1",
+      icon: "🌙",
+      title: "نظّم نومك",
+      content: "حاول النوم والاستيقاظ في نفس الوقت كل يوم. النوم المنتظم يحسن المزاج بشكل كبير ويقلل أعراض القلق.",
+      category: "نمط الحياة",
+      color: "#4A8BB5"
+    },
+    {
+      id: "t2",
+      icon: "🚶",
+      title: "المشي 20 دقيقة يومياً",
+      content: "المشي يفرز إندورفين طبيعي يحسن المزاج. ابدأ بـ 10 دقائق وزد تدريجياً.",
+      category: "نشاط بدني",
+      color: "#7FB285"
+    },
+    {
+      id: "t3",
+      icon: "📱",
+      title: "ابتعد عن الشاشات قبل النوم",
+      content: "الضوء الأزرق من الهاتف يعطل هرمون الميلاتونين. ضع هاتفك جانباً ساعة قبل النوم.",
+      category: "تقنية",
+      color: "#2D5F7E"
+    },
+    {
+      id: "t4",
+      icon: "💧",
+      title: "اشرب الماء بكميات كافية",
+      content: "الجفاف يزيد مستوى الكورتيزول (هرمون التوتر). اشرب 8 أكواب ماء يومياً.",
+      category: "تغذية",
+      color: "#E8A87C"
+    },
+    {
+      id: "t5",
+      icon: "🤝",
+      title: "تواصل مع شخص تثق به",
+      content: "التحدث مع شخص تثق به يخفف العبء النفسي. لا تتحمل كل شيء لوحدك.",
+      category: "علاقات",
+      color: "#4A8BB5"
+    },
+    {
+      id: "t6",
+      icon: "📔",
+      title: "دوّن مشاعرك",
+      content: "الكتابة اليومية تساعدك على فهم مشاعرك. خصص 5 دقائق يومياً لتدوين ما تشعر به.",
+      category: "تطوير الذات",
+      color: "#7FB285"
+    },
+  ],
+  anxiety: [
+    {
+      id: "ta1",
+      icon: "🫁",
+      title: "تمرين التنفس الصندوقي",
+      content: "عند الشعور بالقلق: شهيق 4 ثوانٍ → احبس 4 ثوانٍ → زفير 4 ثوانٍ → انتظر 4 ثوانٍ. كرر 4 مرات.",
+      category: "تقنيات تنفس",
+      color: "#4A8BB5"
+    },
+    {
+      id: "ta2",
+      icon: "⚓",
+      title: "تقنية التأريض 5-4-3-2-1",
+      content: "لاحظ: 5 أشياء تراها، 4 تلمسها، 3 تسمعها، 2 تشمها، 1 تتذوقها. هذا يعيدك للحظة الحاضرة.",
+      category: "تأريض",
+      color: "#7FB285"
+    },
+  ],
+  depression: [
+    {
+      id: "td1",
+      icon: "☀️",
+      title: "اجلس في الشمس 5 دقائق",
+      content: "الشمس تحفز إنتاج السيروتونين. حتى في الأيام الغائمة، الضوء الطبيعي يساعد.",
+      category: "تنشيط سلوكي",
+      color: "#E8A87C"
+    },
+    {
+      id: "td2",
+      icon: "🏆",
+      title: "احتفل بالإنجازات الصغيرة",
+      content: "الاستيقاظ، الأكل، الاستحمام... هذه إنجازات حقيقية عند الاكتئاب. اعترف بها وكافئ نفسك.",
+      category: "تعزيز الذات",
+      color: "#7FB285"
+    },
+  ]
+};
+
+export const ASSESSMENT_QUESTIONS = [
+  // PHQ-9 adapted
+  { id: "q1", text: "هل تشعر بقلة الرغبة والمتعة في فعل أي شيء؟", category: "depression" },
+  { id: "q2", text: "هل تشعر بالحزن أو اليأس أو الكآبة؟", category: "depression" },
+  { id: "q3", text: "هل تعاني من صعوبة في النوم أو تنام أكثر من المعتاد؟", category: "depression" },
+  { id: "q4", text: "هل تشعر بالتعب وفقدان الطاقة؟", category: "depression" },
+  { id: "q5", text: "هل ضعفت شهيتك للطعام أو تأكل أكثر من المعتاد؟", category: "depression" },
+  // GAD-7 adapted
+  { id: "q6", text: "هل تشعر بالعصبية والتوتر والقلق؟", category: "anxiety" },
+  { id: "q7", text: "هل تجد صعوبة في إيقاف التفكير القلق أو التحكم فيه؟", category: "anxiety" },
+  { id: "q8", text: "هل تقلق بشأن أشياء كثيرة في وقت واحد؟", category: "anxiety" },
+  { id: "q9", text: "هل تشعر بضيق أو صعوبة في الاسترخاء؟", category: "anxiety" },
+  { id: "q10", text: "هل تشعر بتوتر شديد لدرجة يصعب معها الجلوس بهدوء؟", category: "anxiety" },
+  // General wellbeing
+  { id: "q11", text: "هل تجد صعوبة في التركيز على ما تفعله؟", category: "both" },
+  { id: "q12", text: "هل تشعر بأن العلاقات الاجتماعية أصبحت أصعب؟", category: "both" },
+];
