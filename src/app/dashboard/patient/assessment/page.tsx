@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import DashboardLayout from '@/components/DashboardLayout';
 import { ASSESSMENT_QUESTIONS } from '@/lib/data';
-import { CheckCircle, ArrowLeft, ArrowRight, Brain, AlertTriangle, TrendingUp } from 'lucide-react';
+import { CheckCircle, ArrowLeft, ArrowRight, Brain, AlertTriangle, TrendingUp, Stethoscope, Activity } from 'lucide-react';
 
 const OPTIONS = [
   { value: 0, label: 'أبداً', color: '#7FB285' },
@@ -49,15 +49,46 @@ export default function AssessmentPage() {
   const setAnswer = (qId: string, val: number) => setAnswers(p => ({ ...p, [qId]: val }));
 
   const handleSubmit = () => {
+    const psychQs = ASSESSMENT_QUESTIONS.filter(q => q.type === 'psych');
+    const medicalQs = ASSESSMENT_QUESTIONS.filter(q => q.type === 'medical');
+    
+    const psychScore = psychQs.reduce((s, q) => s + (answers[q.id] || 0), 0);
+    const medicalScore = medicalQs.reduce((s, q) => s + (answers[q.id] || 0), 0);
+    
     const anxietyQs = ASSESSMENT_QUESTIONS.filter(q => q.category === 'anxiety' || q.category === 'both');
     const depressionQs = ASSESSMENT_QUESTIONS.filter(q => q.category === 'depression' || q.category === 'both');
     const anxiety = anxietyQs.reduce((s, q) => s + (answers[q.id] || 0), 0);
     const depression = depressionQs.reduce((s, q) => s + (answers[q.id] || 0), 0);
-    const dominant = anxiety >= depression ? 'anxiety' : 'depression';
-    const res = { anxiety, depression, dominant };
+    
+    // Determine recommendation type
+    let recommendation = 'psych'; // 'psych' | 'medical' | 'both'
+    if (psychScore >= 8 && medicalScore >= 8) {
+      recommendation = 'both';
+    } else if (medicalScore >= 8) {
+      recommendation = 'medical';
+    } else {
+      recommendation = 'psych';
+    }
+
+    const res = { 
+      anxiety, 
+      depression, 
+      psychScore, 
+      medicalScore, 
+      recommendation,
+      dominant: anxiety >= depression ? 'anxiety' : 'depression'
+    };
+    
     setResult(res);
     updateUser({ assessmentDone: true, assessmentResult: res });
     setSubmitted(true);
+    
+    // Auto-redirect if medical or both is needed after 4 seconds
+    if (recommendation === 'medical' || recommendation === 'both') {
+      setTimeout(() => {
+        router.push('/dashboard/patient/doctor?redirected=true');
+      }, 4500);
+    }
   };
 
   if (isLoading || !user) return null;
@@ -200,98 +231,142 @@ export default function AssessmentPage() {
         ) : (
           /* ─── Results ─── */
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.97 }}
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-6"
           >
-            <div className="text-center py-8">
+            <div className="text-center py-6 bg-white rounded-2xl border border-slate-100 shadow-sm p-6">
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: 'spring', damping: 10 }}
-                className="text-6xl mb-4"
+                className="w-16 h-16 mx-auto rounded-full bg-slate-50 flex items-center justify-center text-3xl mb-3 border border-slate-100"
               >
-                {result.dominant === 'anxiety' ? '💙' : '🧡'}
+                {result.recommendation === 'medical' ? '🩺' : result.recommendation === 'both' ? '🏥' : '🧠'}
               </motion.div>
-              <h2 className="text-2xl font-black text-slate-800 mb-2">تم إتمام الاستبيان بنجاح!</h2>
-              <p className="text-slate-500">إليك ملخص نتيجتك النفسية</p>
+              <h2 className="text-xl font-black text-slate-800 mb-1" style={{ fontFamily: 'Cairo' }}>تم تحليل إجاباتك بنجاح!</h2>
+              <div className="inline-block px-4 py-1.5 rounded-full text-xs font-black mt-2"
+                style={{ 
+                  background: result.recommendation === 'medical' ? 'rgba(232,168,124,0.12)' : result.recommendation === 'both' ? 'rgba(224,90,90,0.12)' : 'rgba(74,139,181,0.12)',
+                  color: result.recommendation === 'medical' ? '#E8A87C' : result.recommendation === 'both' ? '#e05a5a' : '#4A8BB5'
+                }}>
+                التشخيص المقترح: {
+                  result.recommendation === 'medical' ? 'تحتاج إلى استشارة طبية (طبيب عام)' : 
+                  result.recommendation === 'both' ? 'تحتاج إلى استشارة طبية ونفسية مشتركة' : 
+                  'تحتاج إلى استشارة نفسية'
+                }
+              </div>
             </div>
 
-            {/* Scores */}
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { label: 'مستوى القلق', score: result.anxiety, max: 21, icon: '😰' },
-                { label: 'مستوى الاكتئاب', score: result.depression, max: 27, icon: '😔' },
-              ].map(({ label, score, max, icon }) => {
-                const sev = getSeverity(score, max);
-                return (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center"
-                  >
-                    <div className="text-3xl mb-2">{icon}</div>
-                    <p className="text-slate-500 text-xs font-semibold mb-1">{label}</p>
-                    <div className="text-3xl font-black mb-1" style={{ color: sev.color }}>{score}/{max}</div>
-                    <div className="flex items-center justify-center gap-1">
-                      <span>{sev.emoji}</span>
-                      <span className="text-sm font-bold" style={{ color: sev.color }}>{sev.label}</span>
-                    </div>
-                    <div className="progress-bar mt-3">
-                      <motion.div
-                        className="progress-fill"
-                        initial={{ width: 0 }}
-                        animate={{ width: `${(score / max) * 100}%` }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                        style={{ background: sev.color }}
-                      />
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-
-            {/* Recommendation */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm"
-            >
-              <h3 className="font-black text-slate-800 flex items-center gap-2 mb-3">
-                <TrendingUp size={18} style={{ color: '#7FB285' }} />
-                توصياتنا لك
-              </h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'rgba(74,139,181,0.06)' }}>
-                  <span className="text-lg">📦</span>
-                  <div>
-                    <p className="font-bold text-slate-700 text-sm">
-                      {result.dominant === 'anxiety' ? 'صندوق القلق' : 'صندوق الاكتئاب'}
-                    </p>
-                    <p className="text-slate-400 text-xs">يُنصح به بناءً على نتيجتك</p>
-                  </div>
+            {/* Diagnostic Alert Card if Medical or Both */}
+            {(result.recommendation === 'medical' || result.recommendation === 'both') && (
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-5 rounded-2xl border flex flex-col gap-3 text-right"
+                style={{ background: 'rgba(232, 168, 124, 0.08)', borderColor: 'rgba(232, 168, 124, 0.25)' }}
+              >
+                <div className="flex items-center gap-2 text-[#b5673a] font-black text-sm" style={{ fontFamily: 'Cairo' }}>
+                  <Stethoscope size={18} />
+                  <span>توجيه طبي هام</span>
                 </div>
-                <div className="flex items-start gap-3 p-3 rounded-xl" style={{ background: 'rgba(127,178,133,0.06)' }}>
-                  <span className="text-lg">👨‍⚕️</span>
-                  <div>
-                    <p className="font-bold text-slate-700 text-sm">استشارة أخصائي نفسي</p>
-                    <p className="text-slate-400 text-xs">نقترح عليك تحديد موعد مع أحد أخصائيينا</p>
-                  </div>
+                <p className="text-xs text-slate-600 leading-relaxed font-semibold">
+                  بناءً على الأعراض الجسدية التي اخترتها (كالصداع، آلام الصدر أو الهضم)، نوصي بشدة بزيارة الطبيب العام أولاً للتأكد من سلامتك العضوية واستبعاد أي مسببات جسدية لهذه الأعراض.
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#E8A87C] animate-ping" />
+                  <span className="text-[11px] text-[#b5673a] font-bold">جاري توجيهك الآن تلقائياً إلى صفحة الطبيب العام...</span>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Scores detail */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center">
+                <div className="w-10 h-10 mx-auto rounded-xl bg-[#4A8BB5]/10 flex items-center justify-center text-lg mb-2 text-[#4A8BB5]">
+                  <Brain size={20} />
+                </div>
+                <p className="text-slate-400 text-xs font-bold mb-1">المقياس النفسي</p>
+                <div className="text-2xl font-black text-slate-800">{result.psychScore}/24</div>
+                <div className="text-[11px] text-slate-400 font-semibold mt-1">
+                  {result.psychScore >= 8 ? 'أعراض نفسية متوسطة إلى شديدة' : 'أعراض نفسية خفيفة'}
                 </div>
               </div>
-            </motion.div>
 
-            {/* Actions */}
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button onClick={() => router.push('/dashboard/patient/boxes')}
-                className="btn-primary flex-1 py-3 rounded-xl">
-                استعراض الصناديق النفسية
-              </button>
-              <button onClick={() => router.push('/dashboard/patient/specialists')}
-                className="btn-secondary flex-1 py-3 rounded-xl">
-                احجز مع أخصائي
+              <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm text-center">
+                <div className="w-10 h-10 mx-auto rounded-xl bg-[#E8A87C]/10 flex items-center justify-center text-lg mb-2 text-[#E8A87C]">
+                  <Activity size={20} />
+                </div>
+                <p className="text-slate-400 text-xs font-bold mb-1">المقياس الجسدي الطبي</p>
+                <div className="text-2xl font-black text-slate-800">{result.medicalScore}/24</div>
+                <div className="text-[11px] text-slate-400 font-semibold mt-1">
+                  {result.medicalScore >= 8 ? 'أعراض جسدية تستدعي فحصاً' : 'أعراض جسدية خفيفة'}
+                </div>
+              </div>
+            </div>
+
+            {/* Recommended Tools */}
+            <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm space-y-3">
+              <h3 className="text-sm font-black text-slate-800 flex items-center gap-2 mb-1" style={{ fontFamily: 'Cairo' }}>
+                <TrendingUp size={16} className="text-[#7FB285]" />
+                خطواتك القادمة المقترحة
+              </h3>
+              
+              {(result.recommendation === 'medical' || result.recommendation === 'both') && (
+                <div 
+                  onClick={() => router.push('/dashboard/patient/doctor')}
+                  className="flex items-center gap-3 p-3 rounded-xl border border-dashed border-[#E8A87C]/40 hover:bg-[#E8A87C]/05 cursor-pointer transition-all"
+                >
+                  <span className="text-xl">🩺</span>
+                  <div className="flex-1 text-right">
+                    <p className="font-bold text-slate-700 text-sm">استشارة الطبيب العام للمنصة</p>
+                    <p className="text-slate-400 text-xs mt-0.5">احجز موعداً فورياً مع الطبيب العام</p>
+                  </div>
+                  <ArrowLeft size={16} className="text-[#E8A87C]" />
+                </div>
+              )}
+
+              <div 
+                onClick={() => router.push('/dashboard/patient/specialists')}
+                className="flex items-center gap-3 p-3 rounded-xl border border-slate-50 hover:bg-slate-50 cursor-pointer transition-all"
+              >
+                <span className="text-xl">👨‍⚕️</span>
+                <div className="flex-1 text-right">
+                  <p className="font-bold text-slate-700 text-sm">تحدث مع أخصائي نفسي</p>
+                  <p className="text-slate-400 text-xs mt-0.5">جلسة علاجية خاصة وسرية عبر الإنترنت</p>
+                </div>
+                <ArrowLeft size={16} className="text-slate-400" />
+              </div>
+
+              <div 
+                onClick={() => router.push('/dashboard/patient/boxes')}
+                className="flex items-center gap-3 p-3 rounded-xl border border-slate-50 hover:bg-slate-50 cursor-pointer transition-all"
+              >
+                <span className="text-xl">📦</span>
+                <div className="flex-1 text-right">
+                  <p className="font-bold text-slate-700 text-sm">اقتنِ حقيبتك العلاجية المخصصة</p>
+                  <p className="text-slate-400 text-xs mt-0.5">بروتوكولات وكتب وبطاقات التعافي الذاتي</p>
+                </div>
+                <ArrowLeft size={16} className="text-slate-400" />
+              </div>
+            </div>
+
+            {/* Manual redirection action */}
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              {(result.recommendation === 'medical' || result.recommendation === 'both') && (
+                <button 
+                  onClick={() => router.push('/dashboard/patient/doctor')}
+                  className="btn-primary flex-1 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"
+                  style={{ background: 'linear-gradient(135deg, #E8A87C 0%, #b5673a 100%)' }}
+                >
+                  <Stethoscope size={16} /> الذهاب للطبيب العام الآن
+                </button>
+              )}
+              <button 
+                onClick={() => router.push(result.recommendation === 'psych' ? '/dashboard/patient/specialists' : '/dashboard/patient')}
+                className="btn-secondary flex-1 py-3 rounded-xl text-sm font-bold"
+              >
+                العودة للرئيسية
               </button>
             </div>
           </motion.div>

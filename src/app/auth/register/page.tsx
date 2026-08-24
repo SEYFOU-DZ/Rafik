@@ -45,7 +45,7 @@ function RegisterForm() {
 
   const update = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
 
-  const totalSteps = role === 'specialist' ? 3 : 2;
+  const totalSteps = role === 'specialist' ? 1 : 2;
 
   const validateStep = () => {
     if (step === 1) {
@@ -56,9 +56,6 @@ function RegisterForm() {
     }
     if (step === 2 && role === 'patient') {
       if (!form.wilaya || !form.age) return 'يرجى ملء جميع الحقول';
-    }
-    if (step === 2 && role === 'specialist') {
-      if (!form.title || form.specialty.length === 0 || !form.experience) return 'يرجى ملء جميع الحقول';
     }
     return '';
   };
@@ -251,77 +248,6 @@ function RegisterForm() {
                 </motion.div>
               )}
 
-              {/* ─── Step 2 Specialist: Professional Info ─── */}
-              {step === 2 && role === 'specialist' && (
-                <motion.div key="step2s" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} className="space-y-4">
-                  <div className="mb-5">
-                    <h2 className="text-xl font-black text-slate-800" style={{ fontFamily: 'Cairo' }}>معلوماتك المهنية</h2>
-                    <p className="text-slate-400 text-sm mt-1" style={{ fontFamily: 'Tajawal' }}>أخبرنا عن خبرتك ومجال تخصصك</p>
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>اللقب المهني</label>
-                    <input value={form.title} onChange={e => update('title', e.target.value)}
-                      placeholder="مثال: أخصائي نفسي إكلينيكي" className={INPUT} id="reg-title" />
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>سنوات الخبرة</label>
-                    <input type="number" value={form.experience} onChange={e => update('experience', e.target.value)}
-                      placeholder="عدد سنوات الخبرة" className={INPUT} id="reg-exp" min="0" />
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>التخصصات</label>
-                    <div className="space-y-1.5 max-h-44 overflow-y-auto">
-                      {SPECIALTIES.map(sp => (
-                        <label key={sp} className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl cursor-pointer border transition-all ${form.specialty.includes(sp) ? 'border-[#4A8BB5]/40 bg-[#4A8BB5]/06' : 'border-slate-100 bg-slate-50 hover:border-slate-200'}`}>
-                          <input type="checkbox" className="hidden"
-                            checked={form.specialty.includes(sp)}
-                            onChange={e => {
-                              if (e.target.checked) update('specialty', [...form.specialty, sp]);
-                              else update('specialty', form.specialty.filter(s => s !== sp));
-                            }} />
-                          <span className="flex-1 text-xs font-semibold text-slate-700" style={{ fontFamily: 'Tajawal' }}>{sp}</span>
-                          {form.specialty.includes(sp) && <CheckCircle size={14} style={{ color: '#4A8BB5' }} />}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* ─── Step 3 Specialist: Location & Pricing ─── */}
-              {step === 3 && role === 'specialist' && (
-                <motion.div key="step3s" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} className="space-y-4">
-                  <div className="mb-5">
-                    <h2 className="text-xl font-black text-slate-800" style={{ fontFamily: 'Cairo' }}>الموقع والأسعار</h2>
-                    <p className="text-slate-400 text-sm mt-1" style={{ fontFamily: 'Tajawal' }}>آخر خطوة قبل إنشاء حسابك</p>
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>الولاية</label>
-                    <select value={form.wilaya} onChange={e => update('wilaya', e.target.value)}
-                      className={INPUT} id="reg-spec-wilaya">
-                      <option value="">اختر ولايتك</option>
-                      {WILAYAS.map(w => <option key={w} value={w}>{w}</option>)}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>سعر الجلسة (دج)</label>
-                    <input type="number" value={form.price} onChange={e => update('price', e.target.value)}
-                      placeholder="مثال: 3000" className={INPUT} id="reg-price" />
-                  </div>
-
-                  <div>
-                    <label className={LABEL}>نبذة عنك</label>
-                    <textarea value={form.bio} onChange={e => update('bio', e.target.value)}
-                      placeholder="اكتب نبذة قصيرة عن خبرتك وأسلوبك العلاجي..."
-                      className={`${INPUT} resize-none`} rows={4} id="reg-bio" />
-                  </div>
-                </motion.div>
-              )}
             </AnimatePresence>
 
             {/* Error */}

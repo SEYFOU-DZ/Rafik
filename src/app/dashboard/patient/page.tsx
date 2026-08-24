@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import DashboardLayout from '@/components/DashboardLayout';
 import Link from 'next/link';
 import { 
   ClipboardList, Users, Package, Lightbulb, Calendar,
-  TrendingUp, Clock, CheckCircle, AlertTriangle, ArrowLeft, Star
+  TrendingUp, Clock, CheckCircle, AlertTriangle, ArrowLeft, Star,
+  Stethoscope, Headset, Megaphone
 } from 'lucide-react';
-import { BOXES, SPECIALISTS } from '@/lib/data';
+import { BOXES, SPECIALISTS, GROUP_SESSIONS } from '@/lib/data';
 
 // Tiny inline sticker per box id
 function MiniSticker({ id }: { id: string }) {
@@ -49,6 +50,8 @@ function boxGradient(id: string) {
 export default function PatientDashboard() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [bookedSessions, setBookedSessions] = useState<string[]>([]);
+  const [bookingSessionId, setBookingSessionId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoading && (!user || user.role !== 'patient')) router.push('/auth/login');
@@ -68,10 +71,12 @@ export default function PatientDashboard() {
   const assessmentDone = user.assessmentDone;
 
   const quickActions = [
-    { icon: ClipboardList, label: 'الاستبيان النفسي', desc: 'قيّم حالتك الآن', href: '/dashboard/patient/assessment', color: '#4A8BB5', done: assessmentDone },
-    { icon: Users, label: 'اختر أخصائياً', desc: 'تصفح وابحث عن أخصائيين', href: '/dashboard/patient/specialists', color: '#7FB285', done: false },
-    { icon: Package, label: 'الصناديق النفسية', desc: 'أدوات علاجية حصرية', href: '/dashboard/patient/boxes', color: '#E8A87C', done: false },
-    { icon: Lightbulb, label: 'النصائح والإرشادات', desc: 'نصائح مخصصة لك', href: '/dashboard/patient/tips', color: '#4A8BB5', done: false },
+    { icon: ClipboardList, label: 'الاستبيان الطبي النفسي', desc: 'قيّم حالتك جسدياً ونفسياً', href: '/dashboard/patient/assessment', color: '#4A8BB5', done: assessmentDone },
+    { icon: Stethoscope, label: 'الاستشارة الطبية', desc: 'تحدث مع طبيب عام معتمد', href: '/dashboard/patient/doctor', color: '#E8A87C', done: false },
+    { icon: Users, label: 'اختر أخصائياً نفسياً', desc: 'ابحث عن أخصائيين نفسيين', href: '/dashboard/patient/specialists', color: '#7FB285', done: false },
+    { icon: Package, label: 'الصناديق العلاجية', desc: 'أدوات بروتوكولات التعافي', href: '/dashboard/patient/boxes', color: '#E8A87C', done: false },
+    { icon: Headset, label: 'البودكاست الصوتي', desc: 'جلسات استماع وتأمل مريحة', href: '/dashboard/patient/podcast', color: '#4A8BB5', done: false },
+    { icon: Lightbulb, label: 'النصائح والإرشادات', desc: 'نصائح يومية مخصصة', href: '/dashboard/patient/tips', color: '#7FB285', done: false },
   ];
 
   return (
@@ -283,6 +288,85 @@ export default function PatientDashboard() {
             )}
           </motion.div>
         </div>
+
+        {/* Group Sessions Announcements */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.38 }}
+          className="bg-white rounded-2xl p-6 border border-slate-100 shadow-sm text-right"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-black text-slate-800 flex items-center gap-2" style={{ fontFamily: 'Cairo' }}>
+              <Megaphone size={18} className="text-[#E8A87C]" />
+              الورشات والجلسات الجماعية المجانية القادمة 📢
+            </h3>
+            <span className="text-[10px] font-black px-2 py-0.5 rounded-lg bg-green-50 text-green-600">
+              مباشرة أونلاين
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {GROUP_SESSIONS.map(session => {
+              const isBooked = bookedSessions.includes(session.id);
+              const isBooking = bookingSessionId === session.id;
+              const totalSeats = session.seats;
+              const currentBooked = session.bookedSeats + (isBooked ? 1 : 0);
+              const leftSeats = totalSeats - currentBooked;
+              
+              const handleBookSession = async (id: string) => {
+                if (isBooked) return;
+                setBookingSessionId(id);
+                await new Promise(r => setTimeout(r, 800));
+                setBookedSessions(prev => [...prev, id]);
+                setBookingSessionId(null);
+              };
+
+              return (
+                <div 
+                  key={session.id}
+                  className="p-4 rounded-xl border border-slate-100 bg-slate-50/50 flex flex-col justify-between hover:border-slate-200 transition-all"
+                >
+                  <div className="space-y-2">
+                    <span className="text-[9px] font-black px-2 py-0.5 rounded bg-white text-slate-500 border border-slate-100">
+                      {session.date} — {session.time}
+                    </span>
+                    <h4 className="font-bold text-slate-800 text-sm mt-1" style={{ fontFamily: 'Cairo' }}>{session.title}</h4>
+                    <p className="text-[11px] text-slate-400 font-semibold">{session.topic}</p>
+                    <p className="text-[10px] text-slate-500">تقديم: <span className="font-bold">{session.specialist}</span></p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100/70 flex flex-col gap-2">
+                    <div className="flex justify-between items-center text-[10px] font-bold text-slate-400">
+                      <span>بقي {leftSeats} مقاعد</span>
+                      <span>سعة الجلسة: {totalSeats}</span>
+                    </div>
+                    
+                    <button
+                      onClick={() => handleBookSession(session.id)}
+                      disabled={isBooked || isBooking || leftSeats <= 0}
+                      className={`w-full py-2 rounded-lg text-[11px] font-black flex items-center justify-center gap-1 transition-all ${
+                        isBooked 
+                          ? 'bg-green-50 text-green-600 border border-green-200/50' 
+                          : leftSeats <= 0 
+                            ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                            : 'bg-slate-800 text-white hover:bg-slate-700'
+                      }`}
+                    >
+                      {isBooking ? (
+                        <div className="w-4.5 h-4.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin" />
+                      ) : isBooked ? (
+                        <>تم حجز مقعدك ✓</>
+                      ) : (
+                        <>حجز مقعد مجاني</>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         {/* Featured specialist */}
         <motion.div
