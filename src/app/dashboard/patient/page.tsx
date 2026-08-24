@@ -52,10 +52,35 @@ export default function PatientDashboard() {
   const router = useRouter();
   const [bookedSessions, setBookedSessions] = useState<string[]>([]);
   const [bookingSessionId, setBookingSessionId] = useState<string | null>(null);
+  const [dynamicSessions, setDynamicSessions] = useState<any[]>(GROUP_SESSIONS);
 
   useEffect(() => {
     if (!isLoading && (!user || user.role !== 'patient')) router.push('/auth/login');
   }, [user, isLoading, router]);
+
+  useEffect(() => {
+    const getNextFriday = (offsetWeeks = 0) => {
+      const date = new Date();
+      const currentDay = date.getDay();
+      let daysToFriday = 5 - currentDay;
+      if (daysToFriday <= 0) {
+        daysToFriday += 7;
+      }
+      date.setDate(date.getDate() + daysToFriday + (offsetWeeks * 7));
+      const dayNames = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+      const monthNames = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+      return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
+    };
+
+    const updated = GROUP_SESSIONS.map((session, i) => ({
+      ...session,
+      date: getNextFriday(i)
+    }));
+    setDynamicSessions(updated);
+  }, []);
 
   if (isLoading || !user) {
     return (
@@ -146,20 +171,25 @@ export default function PatientDashboard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
+                className="h-full"
               >
-                <Link href={action.href}>
-                  <div className="card-hover bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm cursor-pointer relative">
+                <Link href={action.href} className="block h-full">
+                  <div className="card-hover bg-white rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-sm cursor-pointer relative h-full flex flex-col min-h-[140px] sm:min-h-[150px]">
                     {action.done && (
                       <div className="absolute top-3 left-3">
                         <CheckCircle size={14} className="text-[#7FB285]" />
                       </div>
                     )}
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 flex-shrink-0"
                       style={{ background: `${action.color}18` }}>
                       <action.icon size={20} style={{ color: action.color }} />
                     </div>
-                    <p className="font-black text-slate-800 text-sm leading-tight">{action.label}</p>
-                    <p className="text-slate-400 text-xs mt-1 leading-tight">{action.desc}</p>
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <p className="font-black text-slate-800 text-sm leading-tight" style={{ fontFamily: 'Cairo' }}>{action.label}</p>
+                        <p className="text-slate-400 text-xs mt-1 leading-tight font-semibold">{action.desc}</p>
+                      </div>
+                    </div>
                   </div>
                 </Link>
               </motion.div>
@@ -307,7 +337,7 @@ export default function PatientDashboard() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {GROUP_SESSIONS.map(session => {
+            {dynamicSessions.map(session => {
               const isBooked = bookedSessions.includes(session.id);
               const isBooking = bookingSessionId === session.id;
               const totalSeats = session.seats;

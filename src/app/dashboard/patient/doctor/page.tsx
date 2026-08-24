@@ -15,11 +15,6 @@ const TIME_SLOTS = [
   '09:00', '10:00', '11:00', '13:00', '14:00', '15:00'
 ];
 
-const DAYS = [
-  { key: 'today', label: 'اليوم', date: 'الأحد 24 أغسطس' },
-  { key: 'tomorrow', label: 'غداً', date: 'الاثنين 25 أغسطس' },
-  { key: 'after', label: 'بعد غد', date: 'الثلاثاء 26 أغسطس' },
-];
 
 function DoctorContent() {
   const { user, isLoading, updateUser } = useAuth();
@@ -27,7 +22,12 @@ function DoctorContent() {
   const searchParams = useSearchParams();
   const wasRedirected = searchParams.get('redirected') === 'true';
 
-  const [selectedDay, setSelectedDay] = useState(DAYS[0].date);
+  const [days, setDays] = useState<any[]>([
+    { key: 'today', label: 'اليوم', date: 'تحميل...' },
+    { key: 'tomorrow', label: 'غداً', date: 'تحميل...' },
+    { key: 'after', label: 'بعد غد', date: 'تحميل...' },
+  ]);
+  const [selectedDay, setSelectedDay] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<'profile' | 'contact'>('profile');
@@ -37,6 +37,27 @@ function DoctorContent() {
       router.push('/auth/login');
     }
   }, [user, isLoading, router]);
+
+  useEffect(() => {
+    const getArabicDate = (daysFromNow: number) => {
+      const date = new Date();
+      date.setDate(date.getDate() + daysFromNow);
+      const dayNames = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+      const monthNames = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+      ];
+      return `${dayNames[date.getDay()]} ${date.getDate()} ${monthNames[date.getMonth()]}`;
+    };
+
+    const computedDays = [
+      { key: 'today', label: 'اليوم', date: getArabicDate(0) },
+      { key: 'tomorrow', label: 'غداً', date: getArabicDate(1) },
+      { key: 'after', label: 'بعد غد', date: getArabicDate(2) },
+    ];
+    setDays(computedDays);
+    setSelectedDay(computedDays[0].date);
+  }, []);
 
   if (isLoading || !user) return null;
 
@@ -207,7 +228,7 @@ function DoctorContent() {
               <div>
                 <label className="block text-xs font-black text-slate-400 mb-2">اختر اليوم</label>
                 <div className="space-y-2">
-                  {DAYS.map(day => (
+                  {days.map(day => (
                     <button
                       key={day.key}
                       onClick={() => setSelectedDay(day.date)}

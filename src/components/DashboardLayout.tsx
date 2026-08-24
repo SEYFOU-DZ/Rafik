@@ -134,7 +134,7 @@ export default function DashboardLayout({ children, role }: DashboardLayoutProps
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="flex-1 lg:mr-64 flex flex-col min-h-screen">
+      <div className="flex-1 lg:mr-64 flex flex-col min-h-screen min-w-0 w-full max-w-full overflow-x-hidden">
         {/* Top bar */}
         <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 px-4 sm:px-6 py-4 flex items-center justify-between shadow-sm">
           <button onClick={() => setSidebarOpen(true)} className="lg:hidden p-2 rounded-xl hover:bg-slate-100 transition-colors">
@@ -167,7 +167,7 @@ export default function DashboardLayout({ children, role }: DashboardLayoutProps
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6">
+        <main className="flex-1 p-4 sm:p-6 overflow-x-hidden w-full max-w-full">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
