@@ -76,9 +76,9 @@ function PDFModal({ book, onClose }: { book: any; onClose: () => void }) {
         initial={{ opacity: 0, scale: 0.94 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.94 }}
-        className="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl"
+        className="bg-white rounded-2xl w-full max-w-6xl w-[96vw] h-[92vh] flex flex-col overflow-hidden shadow-2xl"
       >
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 flex-shrink-0">
           <div>
             <h4 className="font-black text-slate-800 text-sm" style={{ fontFamily: 'Cairo' }}>{book.title}</h4>
             <p className="text-slate-400 text-xs">{book.subtitle}</p>
@@ -87,14 +87,14 @@ function PDFModal({ book, onClose }: { book: any; onClose: () => void }) {
             <X size={18} className="text-slate-500" />
           </button>
         </div>
-        <div className="flex-1 overflow-auto bg-slate-50 p-4 flex justify-center">
+        <div className="flex-1 overflow-hidden bg-slate-900 p-2 sm:p-4 flex justify-center">
           <Suspense fallback={
             <div className="flex flex-col items-center justify-center gap-3 py-16">
               <div className="w-10 h-10 border-2 border-[#4A8BB5]/20 border-t-[#4A8BB5] rounded-full animate-spin" />
-              <p className="text-slate-400 text-sm">جاري تحميل الكتاب…</p>
+              <p className="text-slate-400 text-sm">جاري فتح الكتاب…</p>
             </div>
           }>
-            <PDFViewer fileUrl={book.file} />
+            <PDFViewer fileUrl={book.file} title={book.title} />
           </Suspense>
         </div>
       </motion.div>
@@ -102,14 +102,12 @@ function PDFModal({ book, onClose }: { book: any; onClose: () => void }) {
   );
 }
 
-// ────────────────────────────────────────────────────────────
-// Lively Flip Card (Flipped on click)
-// ────────────────────────────────────────────────────────────
 function FlipCard({ card }: { card: any }) {
   const [flipped, setFlipped] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  // Dynamic illustrative sub-headers
   const getSubHeader = () => {
+    if (card.subtitle) return card.subtitle;
     if (card.type === 'technique') return 'تمرين عملي مهدئ وموجه';
     if (card.type === 'affirmation') return 'تأكيد إيجابي لبرمجة العقل الباطن';
     return 'معلومة علمية لشرح الأعراض';
@@ -122,66 +120,111 @@ function FlipCard({ card }: { card: any }) {
   };
 
   return (
-    <div
-      className="cursor-pointer"
-      style={{ perspective: '900px', height: '210px' }}
-      onClick={() => setFlipped(f => !f)}
-    >
-      <motion.div
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        transition={{ duration: 0.5, ease: 'easeInOut' }}
-        style={{ transformStyle: 'preserve-3d', position: 'relative', width: '100%', height: '100%' }}
+    <>
+      <div
+        className="cursor-pointer"
+        style={{ perspective: '900px', height: '240px' }}
+        onClick={() => setFlipped(f => !f)}
       >
-        {/* Front Face: Highly Animated & Lively */}
-        <div
-          className="absolute inset-0 rounded-xl p-5 flex flex-col justify-between border-2 shadow-sm transition-all"
-          style={{ 
-            backfaceVisibility: 'hidden', 
-            background: 'linear-gradient(135deg, #ffffff 0%, #F5F9FD 100%)', 
-            borderColor: card.type === 'technique' ? '#7FB285' : card.type === 'affirmation' ? '#E8A87C' : '#4A8BB5'
-          }}
+        <motion.div
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          style={{ transformStyle: 'preserve-3d', position: 'relative', width: '100%', height: '100%' }}
         >
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wide" 
-              style={{ 
-                background: card.type === 'technique' ? 'rgba(127,178,133,0.12)' : card.type === 'affirmation' ? 'rgba(232,168,124,0.12)' : 'rgba(74,139,181,0.12)', 
-                color: card.type === 'technique' ? '#3d6b43' : card.type === 'affirmation' ? '#a05a2c' : '#2D5F7E' 
-              }}>
-              {card.badge || 'بطاقة علاجية'}
-            </span>
-            <span className="text-slate-400 text-xs font-bold flex items-center gap-1">
-              <span>اقلب للتفاصيل</span> ↻
-            </span>
+          {/* Front Face */}
+          <div
+            className="absolute inset-0 rounded-xl p-4 sm:p-5 flex flex-col justify-between border-2 shadow-sm transition-all"
+            style={{ 
+              backfaceVisibility: 'hidden', 
+              background: 'linear-gradient(135deg, #ffffff 0%, #F5F9FD 100%)', 
+              borderColor: card.type === 'technique' ? '#7FB285' : card.type === 'affirmation' ? '#E8A87C' : '#4A8BB5'
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wide" 
+                style={{ 
+                  background: card.type === 'technique' ? 'rgba(127,178,133,0.12)' : card.type === 'affirmation' ? 'rgba(232,168,124,0.12)' : 'rgba(74,139,181,0.12)', 
+                  color: card.type === 'technique' ? '#3d6b43' : card.type === 'affirmation' ? '#a05a2c' : '#2D5F7E' 
+                }}>
+                {card.badge || 'بطاقة مساعدة'}
+              </span>
+              <span className="text-slate-400 text-xs font-bold flex items-center gap-1">
+                <span>اقلب للشرح</span> ↻
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3 py-1">
+              {card.image ? (
+                <div 
+                  className="w-16 h-20 rounded-lg overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-100 hover:opacity-90 shadow-xs"
+                  onClick={(e) => { e.stopPropagation(); setPreviewImage(card.image); }}
+                  title="انقر لتكبير صورة البطاقة"
+                >
+                  <img src={card.image} alt={card.title} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="text-2xl">{getEmoji()}</div>
+              )}
+              <div className="flex-1 min-w-0">
+                <h4 className="font-black text-slate-800 text-sm sm:text-base leading-snug" style={{ fontFamily: 'Cairo' }}>{card.title}</h4>
+                <p className="text-slate-400 text-xs font-semibold leading-relaxed mt-1">{getSubHeader()}</p>
+                {card.image && (
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setPreviewImage(card.image); }}
+                    className="text-[10px] font-bold text-[#4A8BB5] hover:underline mt-1 block"
+                  >
+                    عرض البطاقة المصورة 🔍
+                  </button>
+                )}
+              </div>
+            </div>
+
+            <div className="border-t border-slate-100 pt-2 text-[10px] text-slate-400 font-bold text-left">
+              انقر لقلب البطاقة وقراءة الخطوات 👆
+            </div>
           </div>
 
-          <div className="space-y-2 py-2">
-            <div className="text-2xl">{getEmoji()}</div>
-            <h4 className="font-black text-slate-800 text-sm sm:text-base leading-snug" style={{ fontFamily: 'Cairo' }}>{card.title}</h4>
-            <p className="text-slate-400 text-xs font-semibold leading-relaxed">{getSubHeader()}</p>
+          {/* Back Face */}
+          <div
+            className="absolute inset-0 rounded-xl p-4 sm:p-5 overflow-y-auto"
+            style={{ 
+              backfaceVisibility: 'hidden', 
+              transform: 'rotateY(180deg)', 
+              background: 'linear-gradient(135deg, #1d3649, #2D5F7E)' 
+            }}
+          >
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-[9px] font-black text-white/50">{card.badge}</span>
+              <span className="text-[9px] font-black text-white/50">توجيه عملي</span>
+            </div>
+            <p className="text-white/95 text-xs sm:text-sm leading-relaxed whitespace-pre-line" style={{ fontFamily: 'Tajawal' }}>{card.content}</p>
           </div>
+        </motion.div>
+      </div>
 
-          <div className="border-t border-slate-100 pt-2 text-[10px] text-slate-400 font-bold text-left">
-            انقر للكشف عن المحتوى العلاجي المكامل 👆
-          </div>
-        </div>
-
-        {/* Back Face */}
-        <div
-          className="absolute inset-0 rounded-xl p-5 overflow-y-auto"
-          style={{ 
-            backfaceVisibility: 'hidden', 
-            transform: 'rotateY(180deg)', 
-            background: 'linear-gradient(135deg, #1d3649, #2D5F7E)' 
-          }}
+      {previewImage && (
+        <div 
+          className="modal-overlay" 
+          style={{ zIndex: 1200 }}
+          onClick={() => setPreviewImage(null)}
         >
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-[9px] font-black text-white/50">{card.badge}</span>
-            <span className="text-[9px] font-black text-white/50">توجيه علاجي</span>
-          </div>
-          <p className="text-white/95 text-xs sm:text-sm leading-relaxed whitespace-pre-line" style={{ fontFamily: 'Tajawal' }}>{card.content}</p>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }} 
+            animate={{ opacity: 1, scale: 1 }} 
+            className="bg-white rounded-2xl p-3 max-w-md max-h-[90vh] overflow-hidden flex flex-col items-center shadow-2xl relative"
+            onClick={e => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setPreviewImage(null)}
+              className="absolute top-4 left-4 p-2 rounded-xl bg-slate-900/60 text-white hover:bg-slate-900"
+            >
+              <X size={16} />
+            </button>
+            <img src={previewImage} alt="البطاقة" className="max-h-[82vh] w-auto rounded-xl object-contain shadow-sm" />
+          </motion.div>
         </div>
-      </motion.div>
-    </div>
+      )}
+    </>
   );
 }
 
@@ -305,7 +348,7 @@ function BoxDrawer({ box, userRole, onClose }: { box: any; userRole: 'patient' |
               </div>
               <div>
                 <h3 className="font-black text-slate-800 text-base" style={{ fontFamily: 'Cairo' }}>{box.name}</h3>
-                <p className="text-xs text-slate-400">{userRole === 'patient' ? 'محتوى المريض' : 'محتوى الأخصائي'}</p>
+                <p className="text-xs text-slate-400">{userRole === 'patient' ? 'محتوى الزائر' : 'محتوى الأخصائي'}</p>
               </div>
             </div>
             <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-100 transition-colors">

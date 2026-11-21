@@ -66,9 +66,9 @@ function PDFModal({ book, onClose }: { book: any; onClose: () => void }) {
         initial={{ opacity: 0, scale: 0.94 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.94 }}
-        className="bg-white rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden shadow-2xl"
+        className="bg-white rounded-2xl w-full max-w-6xl w-[96vw] h-[92vh] flex flex-col overflow-hidden shadow-2xl"
       >
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-slate-100 flex-shrink-0">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-slate-100 flex-shrink-0">
           <div>
             <h4 className="font-black text-slate-800 text-sm" style={{ fontFamily: 'Cairo' }}>{book.title}</h4>
             <p className="text-slate-400 text-xs">{book.subtitle}</p>
@@ -77,9 +77,9 @@ function PDFModal({ book, onClose }: { book: any; onClose: () => void }) {
             <X size={18} className="text-slate-500" />
           </button>
         </div>
-        <div className="flex-1 overflow-auto bg-slate-50 p-4 flex justify-center">
-          <Suspense fallback={<div className="flex flex-col items-center justify-center gap-3 py-16"><div className="w-10 h-10 border-2 border-[#4A8BB5]/20 border-t-[#4A8BB5] rounded-full animate-spin" /><p className="text-slate-400 text-sm">جاري تحميل الكتاب…</p></div>}>
-            <PDFViewer fileUrl={book.file} />
+        <div className="flex-1 overflow-hidden bg-slate-900 p-2 sm:p-4 flex justify-center">
+          <Suspense fallback={<div className="flex flex-col items-center justify-center gap-3 py-16"><div className="w-10 h-10 border-2 border-[#4A8BB5]/20 border-t-[#4A8BB5] rounded-full animate-spin" /><p className="text-slate-400 text-sm">جاري فتح الملف…</p></div>}>
+            <PDFViewer fileUrl={book.file} title={book.title} />
           </Suspense>
         </div>
       </motion.div>
@@ -160,13 +160,14 @@ function InlineAssessment({ assessment }: { assessment: any }) {
 // Specialist Box Drawer
 // ────────────────────────────────────────────────────────────
 function SpecialistBoxDrawer({ box, onClose }: { box: any; onClose: () => void }) {
-  const [tab, setTab] = useState<'books' | 'tools' | 'protocols'>('books');
+  const [tab, setTab] = useState<'books' | 'scales' | 'tools' | 'protocols'>('books');
   const [openPdf, setOpenPdf] = useState<any>(null);
   const content = box.specialistContent;
 
   const tabs = [
-    { key: 'books', label: 'الأدلة المهنية', count: content.booklets?.length || 0 },
-    { key: 'tools', label: 'الاستبيانات العيادية', count: content.assessments?.length || 0 },
+    { key: 'books', label: 'الأدلة والكتب', count: content.booklets?.length || 0 },
+    { key: 'scales', label: 'المقاييس النفسية', count: content.clinicalScales?.length || 0 },
+    { key: 'tools', label: 'الاستبيانات التفاعلية', count: content.assessments?.length || 0 },
     { key: 'protocols', label: 'البروتوكولات العلاجية', count: content.protocols?.length || 0 },
   ];
 
@@ -224,6 +225,30 @@ function SpecialistBoxDrawer({ box, onClose }: { box: any; onClose: () => void }
                   ))}
                 </motion.div>
               )}
+              {tab === 'scales' && (
+                <motion.div key="scales" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
+                  {content.clinicalScales?.map((s: any, i: number) => (
+                    <motion.div key={s.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+                      onClick={() => setOpenPdf(s)}
+                      className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:border-[#7FB285] hover:shadow-md transition-all cursor-pointer bg-white group">
+                      <div className="w-11 h-14 rounded-lg flex items-center justify-center bg-green-50 flex-shrink-0">
+                        <FileText size={20} className="text-[#3d6b43]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-black text-slate-700 text-sm" style={{ fontFamily: 'Cairo' }}>{s.title}</h4>
+                        <p className="text-slate-400 text-xs mt-0.5 truncate">{s.subtitle}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{s.pages} صفحة</span>
+                          <span className="text-[10px] font-bold text-[#4A8BB5] group-hover:underline">عرض المقياس ↗</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                  {(!content.clinicalScales || content.clinicalScales.length === 0) && (
+                    <p className="text-center py-8 text-xs text-slate-400">لا توجد مقاييس إضافية لهذا الصندوق</p>
+                  )}
+                </motion.div>
+              )}
               {tab === 'tools' && (
                 <motion.div key="tools" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
                   {content.assessments?.map((a: any) => <InlineAssessment key={a.id} assessment={a} />)}
@@ -237,6 +262,30 @@ function SpecialistBoxDrawer({ box, onClose }: { box: any; onClose: () => void }
                       <p className="text-slate-500 text-sm leading-relaxed whitespace-pre-line">{p.content}</p>
                     </div>
                   ))}
+                </motion.div>
+              )}
+              {tab === 'scales' && (
+                <motion.div key="scales" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
+                  {content.clinicalScales?.map((s: any, i: number) => (
+                    <motion.div key={s.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06 }}
+                      onClick={() => setOpenPdf(s)}
+                      className="flex items-center gap-4 p-4 border border-slate-200 rounded-xl hover:border-[#7FB285] hover:shadow-md transition-all cursor-pointer bg-white group">
+                      <div className="w-11 h-14 rounded-lg flex items-center justify-center bg-green-50 flex-shrink-0">
+                        <FileText size={20} className="text-[#3d6b43]" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-black text-slate-700 text-sm" style={{ fontFamily: 'Cairo' }}>{s.title}</h4>
+                        <p className="text-slate-400 text-xs mt-0.5 truncate">{s.subtitle}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{s.pages} صفحة</span>
+                          <span className="text-[10px] font-bold text-[#4A8BB5] group-hover:underline">عرض المقياس ↗</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                  {(!content.clinicalScales || content.clinicalScales.length === 0) && (
+                    <p className="text-center py-8 text-xs text-slate-400">لا توجد مقاييس إضافية لهذا الصندوق</p>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

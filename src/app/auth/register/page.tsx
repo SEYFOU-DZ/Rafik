@@ -37,6 +37,9 @@ function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const [contractAgreed, setContractAgreed] = useState(false);
+  const [signature, setSignature] = useState('');
+
   const [form, setForm] = useState({
     name: '', email: '', password: '', confirmPassword: '',
     phone: '', wilaya: '', age: '', gender: '',
@@ -45,17 +48,21 @@ function RegisterForm() {
 
   const update = (k: string, v: any) => setForm(p => ({ ...p, [k]: v }));
 
-  const totalSteps = role === 'specialist' ? 1 : 2;
+  const totalSteps = 2;
 
   const validateStep = () => {
     if (step === 1) {
-      if (!form.name || !form.email || !form.password || !form.confirmPassword) return 'يرجى ملء جميع الحقول';
+      if (!form.name || !form.email || !form.password || !form.confirmPassword) return 'يرجى ملء جميع الحقول الأساسية';
       if (form.password.length < 6) return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
       if (form.password !== form.confirmPassword) return 'كلمتا المرور غير متطابقتين';
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) return 'البريد الإلكتروني غير صحيح';
     }
     if (step === 2 && role === 'patient') {
-      if (!form.wilaya || !form.age) return 'يرجى ملء جميع الحقول';
+      if (!form.wilaya || !form.age) return 'يرجى إكمال بيانات العمر والولاية';
+    }
+    if (step === 2 && role === 'specialist') {
+      if (!contractAgreed) return 'يرجى قراءة بنود العقد والموافقة عليها';
+      if (!signature.trim()) return 'يرجى كتابة اسمك كتوقيع إلكتروني رسمي على العقد';
     }
     return '';
   };
@@ -144,7 +151,7 @@ function RegisterForm() {
               {(['patient', 'specialist'] as const).map(r => (
                 <button key={r} onClick={() => { setRole(r); setStep(1); setError(''); }}
                   className={`flex-1 py-2.5 rounded-xl font-bold text-sm border transition-all ${role === r ? 'bg-[#4A8BB5] text-white border-[#4A8BB5]' : 'bg-white text-slate-400 border-slate-200'}`}>
-                  {r === 'patient' ? 'زائر (مريض)' : 'أخصائي'}
+                  {r === 'patient' ? 'أنا زائر' : 'أخصائي'}
                 </button>
               ))}
             </div>
@@ -245,6 +252,65 @@ function RegisterForm() {
                     style={{ background: 'rgba(74,139,181,0.06)', border: '1px solid rgba(74,139,181,0.15)', color: '#2D5F7E' }}>
                     🔒 بياناتك محمية ولن تُشارك مع أي طرف ثالث
                   </div>
+                </motion.div>
+              )}
+
+              {/* ─── Step 2 Specialist: Partnership Contract ─── */}
+              {step === 2 && role === 'specialist' && (
+                <motion.div key="step2s" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} className="space-y-4">
+                  <div className="mb-4">
+                    <h2 className="text-xl font-black text-slate-800" style={{ fontFamily: 'Cairo' }}>عقد الشراكة والخدمات</h2>
+                    <p className="text-slate-400 text-xs mt-1" style={{ fontFamily: 'Tajawal' }}>
+                      تنظيم العلاقة المهنية ونسب الأتعاب والسرية بين الأخصائي ومنصة رفيقك الذكي
+                    </p>
+                  </div>
+
+                  {/* Contract Preview Card */}
+                  <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/80 space-y-3">
+                    <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                      <span className="text-xs font-bold text-slate-700">وثيقة الشراكة الرسمية</span>
+                      <a
+                        href="/contract/partnership-contract.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-[#4A8BB5] hover:underline flex items-center gap-1"
+                      >
+                        معاينة العقد كاملاً (PDF) ↗
+                      </a>
+                    </div>
+
+                    <div className="text-[11px] text-slate-600 space-y-1.5 leading-relaxed">
+                      <p className="font-bold text-slate-800">أبرز بنود العقد:</p>
+                      <p>• <span className="font-bold">نسبة الأتعاب:</span> يحصل الأخصائي على 80% من قيمة كل جلسة أو استشارة، ونسبة عمولة المنصة 20% لتغطية تكاليف الخوادم والخدمات التقنية.</p>
+                      <p>• <span className="font-bold">السرية وأخلاقيات المهنة:</span> الالتزام التام بالمحافظة على سرية بيانات المرضى والمستفيدين وعدم مشاركتها.</p>
+                      <p>• <span className="font-bold">تقديم الخدمات عن بُعد:</span> الالتزام بمواعيد الجلسات الافتراضية المجدولة عبر المنصة باحترافية.</p>
+                    </div>
+                  </div>
+
+                  {/* Digital Signature */}
+                  <div>
+                    <label className={LABEL}>التوقيع الإلكتروني (اكتب اسمك الكامل للمصادقة)</label>
+                    <input
+                      value={signature}
+                      onChange={e => setSignature(e.target.value)}
+                      placeholder={form.name || "اكتب اسمك الكامل كـ توقيع"}
+                      className={INPUT}
+                      id="reg-signature"
+                    />
+                  </div>
+
+                  {/* Agreement Checkbox */}
+                  <label className="flex items-start gap-2.5 p-3 rounded-xl border border-slate-200 bg-white cursor-pointer hover:border-[#4A8BB5] transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={contractAgreed}
+                      onChange={e => setContractAgreed(e.target.checked)}
+                      className="mt-0.5 rounded border-slate-300 text-[#4A8BB5] focus:ring-[#4A8BB5]"
+                    />
+                    <span className="text-xs text-slate-600 font-medium leading-relaxed">
+                      قرأت وفهمت بنود عقد الشراكة وأوافق على كافة الشروط والالتزامات الواردة فيه.
+                    </span>
+                  </label>
                 </motion.div>
               )}
 

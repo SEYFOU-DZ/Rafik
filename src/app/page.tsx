@@ -240,7 +240,7 @@ export default function LandingPage() {
                     <button className="w-full btn-secondary text-sm py-2.5 rounded-xl" style={{ fontFamily: 'Cairo' }}>تسجيل الدخول</button>
                   </Link>
                   <Link href="/auth/register?role=patient" className="w-full">
-                    <button className="w-full btn-primary text-sm py-2.5 rounded-xl" style={{ fontFamily: 'Cairo' }}>سجل كزائر (مريض)</button>
+                    <button className="w-full btn-primary text-sm py-2.5 rounded-xl" style={{ fontFamily: 'Cairo' }}>سجل كزائر</button>
                   </Link>
                   <Link href="/auth/register?role=specialist" className="w-full">
                     <button className="w-full btn-secondary text-sm py-2.5 rounded-xl" style={{ fontFamily: 'Cairo' }}>سجل كأخصائي</button>
@@ -324,7 +324,7 @@ export default function LandingPage() {
                 whileTap={{ scale: 0.97 }}
               >
                 <Heart size={16} />
-                <span>أنا مريض</span>
+                <span>أنا زائر</span>
               </motion.button>
             </Link>
 

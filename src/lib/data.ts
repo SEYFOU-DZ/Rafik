@@ -195,71 +195,91 @@ export const BOXES = [
     name: "صندوق القلق",
     nameEn: "Anxiety Relief Kit",
     emoji: "🔵",
-    price: 1500,
+    price: 3500,
     currency: "دج",
     color: "#4A8BB5",
     colorLight: "rgba(74, 139, 181, 0.1)",
     gradient: "linear-gradient(135deg, #2D5F7E, #4A8BB5)",
-    description: "حزمة شاملة لإدارة القلق واضطراباته، مصممة خصيصاً لمساعدتك على فهم قلقك والتحكم فيه.",
-    shortDesc: "أدوات علاجية لمواجهة القلق",
-    targetSymptoms: ["قلق عام", "نوبات هلع", "توتر مزمن", "خوف مفرط"],
-    rating: 4.8,
-    purchasesCount: 234,
+    description: "حقيبة علاجية متكاملة للتعامل مع القلق ونوبات الهلع، تضم أدلة علمية وكتيبات استرشادية وبطاقات تقنيات عملية معتمدة.",
+    shortDesc: "أدوات وبروتوكولات علاجية لمواجهة القلق والهلع",
+    targetSymptoms: ["قلق عام", "نوبات هلع", "توتر مزمن", "تسارع ضربات القلب", "أفكار مقلقة"],
+    rating: 4.9,
+    purchasesCount: 342,
     patientContent: {
       booklets: [
-        { id: "b1", title: 'دليل اختراق إنذارك الكاذب', subtitle: 'افهم قلقك', file: "/pdfs/anxiety_10_pages_guide.pdf", type: "pdf", pages: 10 },
-        { id: "b2", title: 'كتيب القلق الأكاديمي الشامل', subtitle: 'دليل علمي', file: "/pdfs/anxiety_academy_booklet.pdf", type: "pdf", pages: 24 },
-        { id: "b3", title: 'الدليل الشامل للتعافي من القلق', subtitle: 'خطوة بخطوة', file: "/pdfs/anxiety_comprehensive_guide.pdf", type: "pdf", pages: 10 },
-        { id: "b4", title: 'دليل الاستشارة الطبية للقلق', subtitle: 'للمراجعة مع الطبيب', file: "/pdfs/anxiety_medical_consultation.pdf", type: "pdf", pages: 10 },
-        { id: "b5", title: 'كتيب التعافي من القلق', subtitle: 'برنامج التعافي الكامل', file: "/pdfs/anxiety_recovery_booklet.pdf", type: "pdf", pages: 18 },
+        { id: "b1", title: "دليل التعافي المتكامل من القلق والهلع", subtitle: "رحلة الفهم والسيطرة والعلاج السلوكي", file: "/books/anxiety-recovery-guide.pdf", type: "pdf", pages: 8 },
+        { id: "b2", title: "الاستشارة النفسية والطبية لاضطراب القلق العام", subtitle: "التقييم العيادي الأولي وخارطة الطريق", file: "/books/anxiety-specialized-consultation.pdf", type: "pdf", pages: 10 },
+        { id: "b3", title: "دليل الاستغاثة النفسية وخطة الطوارئ", subtitle: "إرشادات فورية للتعامل مع نوبات الهلع الحادة", file: "/books/anxiety-emergency-protocol.pdf", type: "pdf", pages: 3 },
+        { id: "b4", title: "مهمة ترويض تنين الأميغدالا", subtitle: "دليل الأكاديمية العصبية لمواجهة مشاعر الخوف", file: "/books/amygdala-taming-guide.pdf", type: "pdf", pages: 10 },
+        { id: "b5", title: "ملحمة استعادة القلعة: الخروج من الضباب", subtitle: "إعادة بناء التوازن النفسي خطوة بخطوة", file: "/books/castle-recovery-epic.pdf", type: "pdf", pages: 10 },
+        { id: "b6", title: "ملحمة استعادة القلعة: كراس التدريبات", subtitle: "تطبيقات وتمارين سلوكية عملية", file: "/books/castle-recovery-workbook.pdf", type: "pdf", pages: 5 },
       ],
       cards: [
         {
-          id: "c1",
+          id: "c-breath-belly",
           type: "technique",
-          title: "تمرين التنفس المربع ⏹️",
-          color: "#4A8BB5",
-          content: "خدع دماغك لترسل له رسالة: أنا بخير!\n\n1. أخرج الهواء كاملاً\n2. شهيق بطيء من الأنف (عد 4 ثوانٍ)\n3. احبس الهواء (4 ثوانٍ)\n4. زفير هادئ من الفم (4 ثوانٍ)\n5. انتظر والرئتان فارغتان (4 ثوانٍ)\n\nكرر 4 مرات وستلاحظ تباطؤ ضربات قلبك!",
-          badge: "تمرين سريع"
-        },
-        {
-          id: "c2",
-          type: "technique",
-          title: "لعبة المحقق 5-4-3-2-1 🔍",
-          color: "#7FB285",
-          content: "أنقذ عقلك من التفكير الكارثي!\n\n5 ألوان تراها في الغرفة الآن\n4 أشياء تلمسها بجسدك\n3 أصوات خفية تسمعها\n2 رائحة تشمها حالياً\n1 طعم تتذوقه في فمك\n\nهذا التمرين يعيد عقلك إلى اللحظة الحاضرة بعيداً عن الأفكار الكارثية",
-          badge: "تأريض فوري"
-        },
-        {
-          id: "c3",
-          type: "affirmation",
-          title: "بطاقات التأكيدات الإيجابية 💙",
+          title: "التنفس البطني",
+          subtitle: "توسيع البطن للتهدئة الفورية",
+          image: "/cards/card-belly-breathing.jpg",
           color: "#E8A87C",
-          content: '"هذا شعور وليس حقيقة"\n\n"أنا آمن الآن وهذا سيمر"\n\n"جسمي يحاول حمايتي وليس إيذائي"\n\n"أنا أقوى من هذا الشعور"\n\n"كل موجة قلق تمر... وهذه ستمر أيضاً"',
-          badge: "تأكيدات"
+          badge: "بطاقة مساعدة",
+          content: "1. يد على البطن\n2. شهيق ببطء (توسع البطن)\n3. حبس لحظة\n4. زفير ببطء\n\nاشعر بالهدوء والاتزان."
         },
         {
-          id: "c4",
-          type: "info",
-          title: "ماذا يحدث داخل جسمك؟ 🧠",
-          color: "#2D5F7E",
-          content: "عندما تشعر بالقلق، اللوزة الدماغية تضغط على 'زر الرعب'!\n\n❤️ قلبك يدق بسرعة → لضخ الدم للعضلات\n💨 تتنفس بسرعة → لإدخال أكسجين أكثر\n🤢 معدتك تؤلمك → لأن الهضم توقف مؤقتاً\n\nالحقيقة: جسمك لا يحاربك، بل يحاول إنقاذك! الأعراض مزعجة لكنها آمنة 100%",
-          badge: "معلومة علمية"
+          id: "c-breath-878",
+          type: "technique",
+          title: "تقنية التنفس 8-7-8",
+          subtitle: "إعادة ضبط إيقاع الجهاز العصبي",
+          image: "/cards/card-breathing-878.jpg",
+          color: "#4A8BB5",
+          badge: "بطاقة مساعدة",
+          content: "• شهيق: 4 ثوانٍ\n• حبس: 7 ثوانٍ\n• زفير: 8 ثوانٍ\n\nكرر الدورة 4 مرات ليهدأ عقلك."
         },
+        {
+          id: "c-challenge-thoughts",
+          type: "technique",
+          title: "تحدي الأفكار التلقائية",
+          subtitle: "أفكارك ليست دائماً حقيقة",
+          image: "/cards/card-challenge-thoughts.jpg",
+          color: "#7FB285",
+          badge: "بطاقة مساعدة",
+          content: "1. حدد الفكرة المقلقة\n2. اسأل: هل هي حقيقة؟\n3. ما هو البديل العقلاني؟\n\nأفكارك ليست دائماً حقيقة."
+        },
+        {
+          id: "c-grounding-54321",
+          type: "technique",
+          title: "تقنية التأريض 5-4-3-2-1",
+          subtitle: "عُد إلى الحاضر في لحظة",
+          image: "/cards/card-grounding-54321.jpg",
+          color: "#2D5F7E",
+          badge: "بطاقة مساعدة",
+          content: "• 5 أشياء تراها\n• 4 أشياء تلمسها\n• 3 أصوات تسمعها\n• 2 روائح تشمها\n• 1 طعم تذوقه\n\nعُد إلى الحاضر في لحظة."
+        }
       ],
       worksheets: [
         {
           id: "w1",
           title: "ورقة تفكيك فكرة القلق",
-          description: "اكتب الفكرة القلقة وتحداها بأسئلة المحقق",
-          fields: ["الفكرة القلقة", "هل حدث هذا من قبل؟", "ما الدليل العلمي؟", "الفكرة الحقيقية الجديدة"]
+          description: "اكتب الفكرة المقلقة وتحداها بأسئلة الفحص العقلاني",
+          fields: ["الفكرة المقلقة", "ما مدى واقعيتها؟", "الدليل المنطقي المعاكس", "الفكرة البديلة المتزنة"]
         }
       ]
     },
     specialistContent: {
       booklets: [
-        { id: "sb1", title: 'دليل خطة جلسات القلق (CBT)', subtitle: 'بروتوكول للأخصائي', file: "/pdfs/anxiety_academy_booklet.pdf", type: "pdf", pages: 24 },
-        { id: "sb2", title: 'مرجع طبي للتعامل مع القلق', subtitle: 'للأخصائيين الطبيين', file: "/pdfs/anxiety_medical_consultation.pdf", type: "pdf", pages: 10 },
+        { id: "sb1", title: "دليل التعافي المتكامل من القلق والهلع", subtitle: "رحلة الفهم والسيطرة والعلاج السلوكي", file: "/books/anxiety-recovery-guide.pdf", type: "pdf", pages: 8 },
+        { id: "sb2", title: "الاستشارة النفسية والطبية لاضطراب القلق العام", subtitle: "التقييم العيادي الأولي وخارطة الطريق", file: "/books/anxiety-specialized-consultation.pdf", type: "pdf", pages: 10 },
+        { id: "sb3", title: "دليل الاستغاثة النفسية وخطة الطوارئ", subtitle: "إرشادات فورية للتعامل مع نوبات الهلع الحادة", file: "/books/anxiety-emergency-protocol.pdf", type: "pdf", pages: 3 },
+        { id: "sb4", title: "مهمة ترويض تنين الأميغدالا", subtitle: "دليل الأكاديمية العصبية لمواجهة مشاعر الخوف", file: "/books/amygdala-taming-guide.pdf", type: "pdf", pages: 10 },
+        { id: "sb5", title: "ملحمة استعادة القلعة: الخروج من الضباب", subtitle: "إعادة بناء التوازن النفسي خطوة بخطوة", file: "/books/castle-recovery-epic.pdf", type: "pdf", pages: 10 },
+        { id: "sb6", title: "ملحمة استعادة القلعة: كراس التدريبات", subtitle: "تطبيقات وتمارين سلوكية عملية", file: "/books/castle-recovery-workbook.pdf", type: "pdf", pages: 5 },
+      ],
+      clinicalScales: [
+        { id: "cs1", title: "مقياس اضطراب القلق العام (GAD-7)", subtitle: "Generalized Anxiety Disorder-7 المعتمد دولياً", file: "/measurements/gad7-anxiety-scale.pdf", pages: 1, type: "pdf" },
+        { id: "cs2", title: "مقياس هاملتون لتقدير القلق (HARS)", subtitle: "Hamilton Anxiety Rating Scale لتقييم الأعراض الجسدية والنفسية", file: "/measurements/hamilton-anxiety-scale.pdf", pages: 2, type: "pdf" },
+        { id: "cs3", title: "مقياس الاكتئاب والقلق والضغوط (Arabic DASS-21)", subtitle: "النسخة العربية المعتمدة ثلاثية المحاور", file: "/measurements/arabic-dass21.pdf", pages: 2, type: "pdf" },
+        { id: "cs4", title: "استمارة تطبيق مقياس DASS-21", subtitle: "نموذج الإجابة العيادية المباشرة", file: "/measurements/dass21-response-form.pdf", pages: 1, type: "pdf" },
+        { id: "cs5", title: "سلم استراتيجيات المواجهة (Lazarus & Folkman)", subtitle: "استراتيجيات التكيف مع الضغوط والأزمات", file: "/measurements/lazarus-folkman-coping.pdf", pages: 3, type: "pdf" }
       ],
       assessments: [
         {

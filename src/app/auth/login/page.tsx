@@ -96,7 +96,7 @@ function LoginForm() {
               <button onClick={() => fillDemo('patient')}
                 className="flex-1 text-xs py-2 px-3 rounded-lg font-bold transition-all"
                 style={{ background: 'rgba(127,178,133,0.1)', color: '#4a7d50', border: '1px solid rgba(127,178,133,0.3)' }}>
-                تجربة كمريض
+                تجربة كزائر
               </button>
               <button onClick={() => fillDemo('specialist')}
                 className="flex-1 text-xs py-2 px-3 rounded-lg font-bold transition-all"
